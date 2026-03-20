@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tactic — Event Planning</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+<div class="noise"></div>
+<div class="container">
+
+    <!-- LEFT SIDE -->
+    <div class="left">
+        <div class="logo-wrap">
+            <img src="images/logo.png" alt="logo">
+        </div>
+    </div>
+
+    <!-- CARD -->
+    <div class="card">
+
+        <div class="tabs">
+            <button class="active" onclick="switchTab('login', this)">Login</button>
+            <button onclick="switchTab('signup', this)">Sign Up</button>
+        </div>
+
+        <!-- LOGIN FORM -->
+        <div class="form-panel active" id="panel-login">
+            <form action="login" method="post" onsubmit="clearMsg('login-msg')">
+                <label>EMAIL</label>
+                <input type="email" name="email" placeholder="you@email.com" required>
+
+                <label>PASSWORD</label>
+                <input type="password" name="password" placeholder="••••••••" required>
+
+                <button type="submit" class="btn">Login →</button>
+            </form>
+
+            <div class="msg error" id="login-msg"></div>
+
+            <p class="switch-text">
+                Not a user yet? <span onclick="switchTab('signup', document.querySelectorAll('.tabs button')[1])">Sign up</span>
+            </p>
+        </div>
+
+        <!-- SIGNUP FORM -->
+        <div class="form-panel" id="panel-signup">
+            <form action="register" method="post" onsubmit="return validateSignup()">
+                <label>USERNAME</label>
+                <input type="text" name="username" placeholder="your_username" required>
+
+                <label>EMAIL</label>
+                <input type="email" name="email" placeholder="you@email.com" required>
+
+                <label>PHONE NUMBER</label>
+                <input type="tel" name="phone" placeholder="+91 00000 00000" required>
+
+                <label>PASSWORD</label>
+                <input type="password" name="password" id="signup-password" placeholder="••••••••" required>
+
+                <label>CONFIRM PASSWORD</label>
+                <input type="password" id="confirm-password" placeholder="••••••••" required>
+
+                <!-- role is always customer, sent as hidden field -->
+                <input type="hidden" name="role" value="customer">
+
+                <button type="submit" class="btn">Sign Up →</button>
+            </form>
+
+            <div class="msg error" id="signup-msg"></div>
+
+            <p class="switch-text">
+                Already a user? <span onclick="switchTab('login', document.querySelectorAll('.tabs button')[0])">Login</span>
+            </p>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    // Tab switching
+    function switchTab(tab, btn) {
+        document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.form-panel').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('panel-' + tab).classList.add('active');
+    }
+
+    // Client-side password match check before submitting
+    function validateSignup() {
+        const pw  = document.getElementById('signup-password').value;
+        const cpw = document.getElementById('confirm-password').value;
+        if (pw !== cpw) {
+            showMsg('signup-msg', 'error', 'Passwords do not match.');
+            return false;
+        }
+        return true;
+    }
+
+    function clearMsg(id) {
+        const el = document.getElementById(id);
+        if (el) { el.classList.remove('show'); el.textContent = ''; }
+    }
+
+    function showMsg(id, type, text) {
+        const el = document.getElementById(id);
+        el.className = 'msg ' + type + ' show';
+        el.textContent = text;
+    }
+
+    // Read error param from URL and show message (set by servlet on redirect)
+    window.addEventListener('DOMContentLoaded', () => {
+        const params = new URLSearchParams(window.location.search);
+        const error  = params.get('error');
+        const tab    = params.get('tab');
+
+        if (tab === 'signup') {
+            switchTab('signup', document.querySelectorAll('.tabs button')[1]);
+        }
+
+        if (error === 'invalid') {
+            showMsg('login-msg', 'error', 'Incorrect email or password.');
+        } else if (error === 'duplicate') {
+            switchTab('signup', document.querySelectorAll('.tabs button')[1]);
+            showMsg('signup-msg', 'error', 'An account with that email, username, or phone already exists.');
+        } else if (error === 'server') {
+            const activeTab = tab === 'signup' ? 'signup-msg' : 'login-msg';
+            showMsg(activeTab, 'error', 'Something went wrong. Please try again.');
+        }
+    });
+</script>
+
+</body>
+</html>
