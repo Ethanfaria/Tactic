@@ -35,7 +35,7 @@ public class RegisterServlet extends HttpServlet {
                 // Store user in session and redirect to dashboard
                 HttpSession session = request.getSession();
                 session.setAttribute("user", user);
-                response.sendRedirect("dashboard.html");
+                response.sendRedirect("home.html");
             }
 
         } catch (SQLException e) {

@@ -23,16 +23,15 @@ public class LoginServlet extends HttpServlet {
 
             if (user == null) {
                 response.sendRedirect("auth.html?error=invalid");
-                response.sendRedirect("auth.html?error=server");
             } else {
                 HttpSession session = request.getSession();
                 session.setAttribute("user", user);
 
                 // Redirect based on role
                 switch (user.getRole()) {
-                    case "admin"    -> response.sendRedirect("admin/dashboard.html");
-                    case "vendor"   -> response.sendRedirect("vendor/dashboard.html");
-                    default         -> response.sendRedirect("dashboard.html");
+                    case "admin"    -> response.sendRedirect("admin/home.html");
+                    case "vendor"   -> response.sendRedirect("vendor/home.html");
+                    default         -> response.sendRedirect("home.html");
                 }
             }
 
