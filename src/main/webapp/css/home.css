@@ -303,6 +303,90 @@ nav {
 .qb-card p { font-size: 14px; font-weight: 600; margin: 0; }
 .qb-card span { font-size: 12px; color: var(--text-muted); }
 
+/* ─── PARTNER SECTION ─── */
+.partner-section {
+  padding: 100px 40px;
+  border-top: 1px solid var(--border);
+  background:
+          radial-gradient(ellipse 60% 80% at 90% 50%, rgba(124,58,237,0.15) 0%, transparent 60%);
+}
+.partner-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 60px;
+}
+.partner-text { max-width: 560px; }
+.partner-text h2 {
+  font-size: clamp(28px, 3.5vw, 44px);
+  font-weight: 700;
+  line-height: 1.15;
+  margin: 12px 0 16px;
+}
+.partner-text h2 span { color: var(--purple-light); font-style: italic; }
+.partner-text p {
+  font-size: 15px;
+  color: var(--text-muted);
+  line-height: 1.7;
+  margin-bottom: 28px;
+}
+.partner-perks {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 32px;
+}
+.perk {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--text-muted);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 10px 14px;
+  border-radius: 10px;
+}
+.btn-partner {
+  display: inline-block;
+  padding: 14px 32px;
+  background: linear-gradient(90deg, var(--purple), var(--purple-light));
+  color: white;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 15px;
+  transition: opacity 0.2s, transform 0.2s;
+}
+.btn-partner:hover { opacity: 0.9; transform: translateY(-1px); }
+.partner-card {
+  background: var(--surface);
+  border: 1px solid rgba(124,58,237,0.25);
+  border-radius: 20px;
+  padding: 36px;
+  text-align: center;
+  min-width: 260px;
+  flex-shrink: 0;
+}
+.partner-card-icon { font-size: 48px; margin-bottom: 16px; }
+.partner-card-title { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+.partner-card-sub { font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-bottom: 20px; }
+.btn-partner-login {
+  display: inline-block;
+  padding: 10px 24px;
+  background: transparent;
+  color: var(--purple-light);
+  border: 1px solid rgba(124,58,237,0.35);
+  border-radius: 9px;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+.btn-partner-login:hover { background: rgba(124,58,237,0.1); }
+
 /* ─── FOOTER ─── */
 footer {
   padding: 32px 40px;

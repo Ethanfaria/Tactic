@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tactic — Create Event</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/create-event.css">
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-inner">
+      <a href="home" class="logo">Tac<span>tic</span></a>
+      <a href="home" class="nav-back">← Back to home</a>
+    </div>
+  </nav>
+
+  <main>
+    <div class="page-wrap">
+
+      <!-- LEFT: context -->
+      <div class="left-panel">
+        <p class="eyebrow">✦ New event</p>
+        <h1>Let's plan<br><span>something great.</span></h1>
+        <p class="left-sub">Fill in the details and we'll help you bring it all together — vendors, guests, food, and more.</p>
+
+        <!-- Step indicators (vertical) -->
+        <div class="steps">
+          <div class="step active" id="ind-1">
+            <div class="step-dot"></div>
+            <div class="step-info">
+              <span class="step-label">Step 1</span>
+              <span class="step-name">The basics</span>
+            </div>
+          </div>
+          <div class="step-line"></div>
+          <div class="step" id="ind-2">
+            <div class="step-dot"></div>
+            <div class="step-info">
+              <span class="step-label">Step 2</span>
+              <span class="step-name">Date & time</span>
+            </div>
+          </div>
+          <div class="step-line"></div>
+          <div class="step" id="ind-3">
+            <div class="step-dot"></div>
+            <div class="step-info">
+              <span class="step-label">Step 3</span>
+              <span class="step-name">Guests & location</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: form -->
+      <div class="right-panel">
+        <form action="event/create" method="post" id="event-form">
+
+          <!-- STEP 1: Basics -->
+          <div class="form-step active" id="step-1">
+            <div class="step-header">
+              <p class="step-pill">Step 1 of 3</p>
+              <h2>The basics</h2>
+              <p class="step-desc">What's the occasion?</p>
+            </div>
+
+            <div class="field">
+              <label for="event_name">EVENT NAME</label>
+              <input type="text" id="event_name" name="event_name" placeholder="e.g. Priya's 25th Birthday" required>
+            </div>
+
+            <div class="field">
+              <label for="event_type">EVENT TYPE</label>
+              <div class="select-wrap">
+                <select id="event_type" name="event_type" required>
+                  <option value="" disabled selected>Select event type</option>
+                  <option value="birthday">🎂 Birthday</option>
+                  <option value="wedding">💍 Wedding</option>
+                  <option value="house_party">🎉 House Party</option>
+                  <option value="conference">🤝 Conference</option>
+                  <option value="corporate">💼 Corporate</option>
+                  <option value="social_gathering">🎶 Social Gathering</option>
+                  <option value="other">✨ Other</option>
+                </select>
+                <span class="select-arrow">▾</span>
+              </div>
+            </div>
+
+            <!-- Event type visual selector -->
+            <div class="type-grid">
+              <div class="type-tile" data-value="birthday" onclick="selectType(this)">🎂<span>Birthday</span></div>
+              <div class="type-tile" data-value="wedding" onclick="selectType(this)">💍<span>Wedding</span></div>
+              <div class="type-tile" data-value="house_party" onclick="selectType(this)">🎉<span>House Party</span></div>
+              <div class="type-tile" data-value="conference" onclick="selectType(this)">🤝<span>Conference</span></div>
+              <div class="type-tile" data-value="corporate" onclick="selectType(this)">💼<span>Corporate</span></div>
+              <div class="type-tile" data-value="social_gathering" onclick="selectType(this)">🎶<span>Social</span></div>
+              <div class="type-tile" data-value="other" onclick="selectType(this)">✨<span>Other</span></div>
+            </div>
+
+            <div class="msg error" id="msg-1"></div>
+            <div class="step-actions">
+              <button type="button" class="btn-next" onclick="goTo(2)">Continue →</button>
+            </div>
+          </div>
+
+          <!-- STEP 2: Date & Time -->
+          <div class="form-step" id="step-2">
+            <div class="step-header">
+              <p class="step-pill">Step 2 of 3</p>
+              <h2>Date & time</h2>
+              <p class="step-desc">When is it happening?</p>
+            </div>
+
+            <div class="field-row">
+              <div class="field">
+                <label for="event_date">DATE</label>
+                <input type="date" id="event_date" name="event_date" required>
+              </div>
+              <div class="field">
+                <label for="event_time">TIME</label>
+                <input type="time" id="event_time" name="event_time" required>
+              </div>
+            </div>
+
+            <!-- Date preview card -->
+            <div class="date-preview" id="date-preview">
+              <div class="date-preview-icon">📅</div>
+              <div class="date-preview-text">
+                <span id="preview-date">Pick a date to see preview</span>
+                <span id="preview-time" class="preview-sub"></span>
+              </div>
+            </div>
+
+            <div class="msg error" id="msg-2"></div>
+            <div class="step-actions">
+              <button type="button" class="btn-back" onclick="goTo(1)">← Back</button>
+              <button type="button" class="btn-next" onclick="goTo(3)">Continue →</button>
+            </div>
+          </div>
+
+          <!-- STEP 3: Guests & Location -->
+          <div class="form-step" id="step-3">
+            <div class="step-header">
+              <p class="step-pill">Step 3 of 3</p>
+              <h2>Guests & location</h2>
+              <p class="step-desc">Almost there — just a few more details.</p>
+            </div>
+
+            <div class="field">
+              <label for="location">LOCATION</label>
+              <input type="text" id="location" name="location" placeholder="e.g. Coco Lawns, Miramar, Goa">
+            </div>
+
+            <div class="field">
+              <label for="guest_count">EXPECTED GUEST COUNT</label>
+              <div class="guest-count-wrap">
+                <button type="button" class="count-btn" onclick="changeGuests(-10)">−</button>
+                <input type="number" id="guest_count" name="guest_count" value="50" min="1" max="10000">
+                <button type="button" class="count-btn" onclick="changeGuests(10)">+</button>
+              </div>
+              <p class="field-hint">You can update this later</p>
+            </div>
+
+            <!-- Summary card -->
+            <div class="summary-card">
+              <p class="summary-title">✦ Event summary</p>
+              <div class="summary-row"><span>Name</span><strong id="sum-name">—</strong></div>
+              <div class="summary-row"><span>Type</span><strong id="sum-type">—</strong></div>
+              <div class="summary-row"><span>Date</span><strong id="sum-date">—</strong></div>
+              <div class="summary-row"><span>Time</span><strong id="sum-time">—</strong></div>
+            </div>
+
+            <div class="msg error" id="msg-3"></div>
+            <div class="step-actions">
+              <button type="button" class="btn-back" onclick="goTo(2)">← Back</button>
+              <button type="submit" class="btn-next">Create event ✓</button>
+            </div>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    let currentStep = 1;
+
+    function goTo(step) {
+      if (step > currentStep && !validate(currentStep)) return;
+
+      document.getElementById('step-' + currentStep).classList.remove('active');
+      document.getElementById('ind-' + currentStep).classList.remove('active');
+      document.getElementById('ind-' + currentStep).classList.add('done');
+
+      currentStep = step;
+
+      document.getElementById('step-' + currentStep).classList.add('active');
+      document.getElementById('ind-' + currentStep).classList.remove('done');
+      document.getElementById('ind-' + currentStep).classList.add('active');
+
+      if (step === 3) updateSummary();
+    }
+
+    function validate(step) {
+      clearMsg(step);
+      if (step === 1) {
+        const name = document.getElementById('event_name').value.trim();
+        const type = document.getElementById('event_type').value;
+        if (!name) { showMsg(1, 'Please enter an event name.'); return false; }
+        if (!type) { showMsg(1, 'Please select an event type.'); return false; }
+      }
+      if (step === 2) {
+        const date = document.getElementById('event_date').value;
+        const time = document.getElementById('event_time').value;
+        if (!date) { showMsg(2, 'Please pick a date.'); return false; }
+        if (!time) { showMsg(2, 'Please pick a time.'); return false; }
+        if (new Date(date) < new Date().setHours(0,0,0,0)) {
+          showMsg(2, 'Event date cannot be in the past.'); return false;
+        }
+      }
+      return true;
+    }
+
+    function showMsg(step, text) {
+      const el = document.getElementById('msg-' + step);
+      el.textContent = text;
+      el.classList.add('show');
+    }
+
+    function clearMsg(step) {
+      const el = document.getElementById('msg-' + step);
+      el.textContent = '';
+      el.classList.remove('show');
+    }
+
+    function selectType(tile) {
+      document.querySelectorAll('.type-tile').forEach(t => t.classList.remove('selected'));
+      tile.classList.add('selected');
+      document.getElementById('event_type').value = tile.dataset.value;
+    }
+
+    function changeGuests(delta) {
+      const input = document.getElementById('guest_count');
+      const newVal = Math.max(1, parseInt(input.value || 0) + delta);
+      input.value = newVal;
+    }
+
+    // Date preview
+    document.getElementById('event_date').addEventListener('change', updateDatePreview);
+    document.getElementById('event_time').addEventListener('change', updateDatePreview);
+
+    function updateDatePreview() {
+      const d = document.getElementById('event_date').value;
+      const t = document.getElementById('event_time').value;
+      if (d) {
+        const date = new Date(d);
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('preview-date').textContent = date.toLocaleDateString('en-IN', options);
+      }
+      if (t) {
+        const [h, m] = t.split(':');
+        const hour = parseInt(h);
+        const ampm = hour >= 12 ? 'PM' : 'AM';
+        const hour12 = hour % 12 || 12;
+        document.getElementById('preview-time').textContent = `${hour12}:${m} ${ampm}`;
+      }
+    }
+
+    function updateSummary() {
+      const typeLabels = {
+        birthday: 'Birthday', wedding: 'Wedding', house_party: 'House Party',
+        conference: 'Conference', corporate: 'Corporate',
+        social_gathering: 'Social Gathering', other: 'Other'
+      };
+      const d = document.getElementById('event_date').value;
+      const t = document.getElementById('event_time').value;
+      const type = document.getElementById('event_type').value;
+
+      document.getElementById('sum-name').textContent = document.getElementById('event_name').value || '—';
+      document.getElementById('sum-type').textContent = typeLabels[type] || '—';
+
+      if (d) {
+        const date = new Date(d);
+        document.getElementById('sum-date').textContent = date.toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
+      }
+      if (t) {
+        const [h, m] = t.split(':');
+        const hour = parseInt(h);
+        document.getElementById('sum-time').textContent = `${hour % 12 || 12}:${m} ${hour >= 12 ? 'PM' : 'AM'}`;
+      }
+    }
+
+    // Read error from URL
+    window.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('error') === 'server') showMsg(1, 'Something went wrong. Please try again.');
+      if (params.get('error') === 'missing') showMsg(1, 'Please fill in all required fields.');
+    });
+  </script>
+
+</body>
+</html>
