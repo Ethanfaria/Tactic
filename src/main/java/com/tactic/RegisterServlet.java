@@ -21,8 +21,8 @@ public class RegisterServlet extends HttpServlet {
         String password = request.getParameter("password");
         String role     = request.getParameter("role");
 
-        // Default to customer if role not provided
-        if (role == null || role.isEmpty()) role = "customer";
+        // Default to customer if role not provided; never allow self-registration as admin
+        if (role == null || role.isEmpty() || "admin".equals(role)) role = "customer";
 
         try {
             User user = userDAO.registerUser(username, email, phone, password, role);
