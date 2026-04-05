@@ -29,13 +29,20 @@ public class RegisterServlet extends HttpServlet {
 
             if (user == null) {
                 // Duplicate email/username/phone
-                response.sendRedirect("auth.html?error=duplicate&tab=signup");
-                response.sendRedirect("auth.html?error=server&tab=signup");
+                String referer = request.getHeader("Referer");
+                if (referer != null && referer.contains("vendor-signup")) {
+                    response.sendRedirect("vendor-signup.html?error=duplicate");
+                } else {
+                    response.sendRedirect("auth.html?error=duplicate&tab=signup");
+                }
             } else {
-                // Store user in session and redirect to dashboard
                 HttpSession session = request.getSession();
                 session.setAttribute("user", user);
-                response.sendRedirect("home.html");
+                if("vendor".equals(user.getRole())){
+                    response.sendRedirect("vendor/create-profile");
+                }else{
+                    response.sendRedirect("home");
+                }
             }
 
         } catch (SQLException e) {

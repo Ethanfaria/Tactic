@@ -21,23 +21,25 @@ public class LoginServlet extends HttpServlet {
         try {
             User user = userDAO.loginUser(email, password);
 
+            String ctx = request.getContextPath();
+
             if (user == null) {
-                response.sendRedirect("auth.html?error=invalid");
+                response.sendRedirect(ctx + "/auth.html?error=invalid");
             } else {
                 HttpSession session = request.getSession();
                 session.setAttribute("user", user);
 
                 // Redirect based on role
                 switch (user.getRole()) {
-                    case "admin"    -> response.sendRedirect("admin/home.html");
-                    case "vendor"   -> response.sendRedirect("vendor/home.html");
-                    default         -> response.sendRedirect("home.html");
+                    case "admin"  -> response.sendRedirect(ctx + "/admin/dashboard");
+                    case "vendor" -> response.sendRedirect(ctx + "/vendor/dashboard");
+                    default       -> response.sendRedirect(ctx + "/home");
                 }
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
-            response.sendRedirect("login.html?error=server");
+            response.sendRedirect(request.getContextPath() + "/auth.html?error=server");
         }
     }
 }
